@@ -52,7 +52,19 @@ async function handleReview() {
       body: JSON.stringify({ url: prUrl }),
     });
 
-    const data = await response.json();
+    // 获取响应文本
+    const responseText = await response.text();
+    console.log('Response status:', response.status);
+    console.log('Response text:', responseText);
+
+    // 尝试解析 JSON
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      throw new Error(`服务器返回了无效的响应: ${responseText.substring(0, 100)}`);
+    }
 
     if (!response.ok) {
       throw new Error(data.error || data.message || '审查失败');
