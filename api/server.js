@@ -1,28 +1,28 @@
 require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
 const GitHubService = require('../src/services/github');
 const LLMService = require('../src/services/llm');
 
-const app = express();
-
-// 中间件
-app.use(bodyParser.json());
-
 /**
- * 健康检查接口
+ * Vercel Serverless Function Handler
  */
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+module.exports = async (req, res) => {
+  // 设置 CORS 头
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-/**
- * 代码审查接口
- * POST /review
- * Body: { "url": "https://github.com/owner/repo/pull/123" }
- */
-app.post('/review', async (req, res) => {
+  // 处理 OPTIONS 预检请求
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // 健康检查
+  if (req.method === 'GET') {
+    return res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  }
+
+  // 代码审查接口
+  if (req.method === 'POST') {
   try {
     const { url } = req.body;
 
@@ -63,7 +63,7 @@ app.post('/review', async (req, res) => {
     console.log('审查完成!');
 
     // 返回结果
-    res.json({
+    return res.status(200).json({
       success: true,
       data: {
         prUrl: url,
@@ -82,23 +82,17 @@ app.post('/review', async (req, res) => {
   } catch (error) {
     console.error('审查失败:', error);
     
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: error.message,
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
-});
+  }
 
-/**
- * 404 处理
- */
-app.use((req, res) => {
-  res.status(404).json({
+  // 404 处理
+  return res.status(404).json({
     error: 'Not found',
     message: 'The requested endpoint does not exist',
   });
-});
-
-// 导出 Express app 而不是启动服务器
-module.exports = app;
+};

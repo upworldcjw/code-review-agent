@@ -1,11 +1,17 @@
 {
+  "functions": {
+    "api/server.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     {
-      "source": "/health",
+      "source": "/review",
       "destination": "/api/server"
     },
     {
-      "source": "/review",
+      "source": "/health",
       "destination": "/api/server"
     },
     {
