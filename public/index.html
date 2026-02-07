@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub PR 代码审查 Agent</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🤖 GitHub PR 代码审查 Agent</h1>
+      <p class="subtitle">基于 LLM 的智能代码审查工具</p>
+    </header>
+
+    <main>
+      <!-- 输入区域 -->
+      <div class="input-section">
+        <div class="input-group">
+          <label for="prUrl">PR URL</label>
+          <input 
+            type="text" 
+            id="prUrl" 
+            placeholder="https://github.com/owner/repo/pull/123"
+            value=""
+          />
+        </div>
+        <button id="reviewBtn" class="btn-primary">
+          <span class="btn-text">开始审查</span>
+          <span class="btn-loading" style="display: none;">审查中...</span>
+        </button>
+      </div>
+
+      <!-- 识别内容展示区域 -->
+      <div id="parsedInfo" class="parsed-info" style="display: none;">
+        <h2>📊 PR 识别信息</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">标题:</span>
+            <span class="info-value" id="prTitle">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">作者:</span>
+            <span class="info-value" id="prAuthor">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">状态:</span>
+            <span class="info-value" id="prState">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">变更文件:</span>
+            <span class="info-value" id="prFiles">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">新增行数:</span>
+            <span class="info-value" id="prAdditions">-</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">删除行数:</span>
+            <span class="info-value" id="prDeletions">-</span>
+          </div>
+        </div>
+
+        <!-- 文件变更列表 -->
+        <div class="files-section">
+          <h3>📁 文件变更列表</h3>
+          <div id="filesList" class="files-list"></div>
+        </div>
+
+        <!-- Prompt 预览 -->
+        <div class="prompt-section">
+          <h3>🔍 模型输入 Prompt</h3>
+          <div class="prompt-toggle">
+            <button id="togglePrompt" class="btn-secondary">显示/隐藏 Prompt</button>
+          </div>
+          <pre id="promptPreview" class="prompt-preview" style="display: none;"></pre>
+        </div>
+      </div>
+
+      <!-- 审查报告展示区域 -->
+      <div id="reportSection" class="report-section" style="display: none;">
+        <h2>📝 审查报告</h2>
+        <div id="reportContent" class="report-content markdown-body"></div>
+      </div>
+
+      <!-- 错误信息 -->
+      <div id="errorSection" class="error-section" style="display: none;">
+        <h2>❌ 错误信息</h2>
+        <div id="errorContent" class="error-content"></div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Powered by LLM (通义千问) & GitHub API</p>
+    </footer>
+  </div>
+
+  <!-- Markdown 渲染库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

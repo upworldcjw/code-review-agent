@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const GitHubService = require('./services/github');
 const LLMService = require('./services/llm');
 
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 8787;
 
 // 中间件
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../public'))); // 静态文件服务
 
 /**
  * 健康检查接口
