@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/server"
+    },
+    {
+      "source": "/review",
+      "destination": "/api/server"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/public/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  code-review-agent:
+    build: .
+    ports:
+      - "8787:8787"
+    environment:
+      - NODE_ENV=production
+      - PORT=8787
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+    restart: unless-stopped
+    container_name: code-review-agent
