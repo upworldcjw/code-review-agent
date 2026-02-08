@@ -15,12 +15,13 @@
 
 ## 🎬 快速演示
 
-<!-- 
-TODO: 添加演示 GIF
-![Demo](./docs/demo.gif)
--->
+### 📸 界面预览
 
-### 📸 功能预览
+<div align="center">
+  <img src="./docs/screen.png" alt="Code Review Agent 界面截图" width="100%">
+</div>
+
+### 💡 功能预览
 
 <table>
 <tr>
