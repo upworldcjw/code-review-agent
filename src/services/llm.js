@@ -1,15 +1,25 @@
-const OpenAI = require('openai');
-
 /**
  * LLM 代码审查服务
  */
 class LLMService {
   constructor(apiKey, baseURL = null) {
-    const config = { apiKey };
-    if (baseURL) {
-      config.baseURL = baseURL;
+    this.apiKey = apiKey;
+    this.baseURL = baseURL;
+    this.client = null;
+  }
+
+  /**
+   * 初始化 OpenAI 客户端（动态导入）
+   */
+  async initialize() {
+    if (!this.client) {
+      const OpenAI = (await import('openai')).default;
+      const config = { apiKey: this.apiKey };
+      if (this.baseURL) {
+        config.baseURL = this.baseURL;
+      }
+      this.client = new OpenAI(config);
     }
-    this.client = new OpenAI(config);
   }
 
   /**
@@ -106,6 +116,7 @@ ${filesInfo}
    * @returns {string} - Markdown 格式的审查报告
    */
   async reviewCode(prInfo, files) {
+    await this.initialize();
     const prompt = this.buildReviewPrompt(prInfo, files);
 
     try {

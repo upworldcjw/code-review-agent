@@ -1,13 +1,22 @@
-const { Octokit } = require('@octokit/rest');
-
 /**
  * GitHub API 服务
  */
 class GitHubService {
   constructor(token) {
-    this.octokit = new Octokit({
-      auth: token,
-    });
+    this.token = token;
+    this.octokit = null;
+  }
+
+  /**
+   * 初始化 Octokit 实例（动态导入）
+   */
+  async initialize() {
+    if (!this.octokit) {
+      const { Octokit } = await import('@octokit/rest');
+      this.octokit = new Octokit({
+        auth: this.token,
+      });
+    }
   }
 
   /**
@@ -33,6 +42,7 @@ class GitHubService {
    * @returns {Object} - { files, prInfo }
    */
   async getPRFiles(prUrl) {
+    await this.initialize();
     const { owner, repo, pull_number } = this.parsePRUrl(prUrl);
 
     // 获取 PR 基本信息
@@ -79,6 +89,7 @@ class GitHubService {
    * @returns {string} - 完整的 diff 文本
    */
   async getPRDiff(prUrl) {
+    await this.initialize();
     const { owner, repo, pull_number } = this.parsePRUrl(prUrl);
 
     // 获取 PR 的 diff 格式
