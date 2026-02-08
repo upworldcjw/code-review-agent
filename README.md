@@ -1,15 +1,69 @@
 # 🤖 Code Review Agent (GitHub PR)
 
+<div align="center">
+
 一个用于 **GitHub Pull Request** 的智能代码审查 Agent：输入 PR 链接，自动拉取变更文件与 patch/diff，调用 LLM 生成专业的审查报告（Markdown）。
+
+[![在线演示](https://img.shields.io/badge/在线演示-code--review--agent-blue?style=for-the-badge&logo=vercel)](https://code-review-agent-delta.vercel.app)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/upworldcjw/code-review-agent)
+
+**🎯 [在线体验](https://code-review-agent-delta.vercel.app) | 📖 [部署指南](./DEPLOYMENT.md)**
+
+</div>
+
+---
+
+## 🎬 快速演示
+
+<!-- 
+TODO: 添加演示 GIF
+![Demo](./docs/demo.gif)
+-->
+
+### 📸 功能预览
+
+<table>
+<tr>
+<td width="50%">
+
+**1️⃣ 输入 PR URL**
+- 默认已填充示例 PR
+- 可选填写 GitHub Token
+- 点击"开始审查"
+
+</td>
+<td width="50%">
+
+**2️⃣ 查看审查报告**
+- PR 基本信息展示
+- 文件变更统计
+- LLM 生成的审查报告
+
+</td>
+</tr>
+</table>
+
+### 在线体验（无需安装）
+
+访问 **[https://code-review-agent-delta.vercel.app](https://code-review-agent-delta.vercel.app)**，立即体验：
+
+1. ✨ **默认 PR 已填充** - 点击"开始审查"即可测试
+2. 🔐 **支持自定义 Token** - 可选填写 GitHub Token 访问私有仓库
+3. 📊 **可视化展示** - PR 信息、Prompt、审查报告一目了然
+4. ⏱️ **3 分钟超时** - 支持大型 PR 的深度分析
+
+---
 
 ## ✨ 功能特性
 
 - 🖥️ **Web 界面**：现代化 UI，可视化展示 PR 信息和审查报告
+- 🔐 **自定义 Token**：支持用户提供 GitHub Token 访问私有仓库
 - 💻 **CLI 工具**：`review <prUrl>` 生成 `report.md`
 - 🌐 **HTTP API**：`POST /review` 传 PR 链接，返回 Markdown 报告
-- 🔗 **GitHub 集成**：使用 `GITHUB_TOKEN` 拉取 PR files/patch
+- 🔗 **GitHub 集成**：自动拉取 PR files/patch 和完整 diff
 - 🧠 **LLM 驱动**：支持 OpenAI / 通义千问等多种 LLM
 - 📊 **Prompt 预览**：可视化展示发送给模型的完整输入
+- ⚡ **Serverless 部署**：支持 Vercel 一键部署，零配置
 
 ## PR 链接格式
 
@@ -109,9 +163,31 @@ docker-compose up -d
 
 ## 🌍 远程部署
 
-详细部署指南请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)
+### 🚀 一键部署到 Vercel（推荐）
 
-### 快速部署到 Vercel（推荐）
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/upworldcjw/code-review-agent)
+
+**在线演示**: [https://code-review-agent-delta.vercel.app](https://code-review-agent-delta.vercel.app)
+
+#### 环境变量配置
+
+部署后需要在 Vercel Dashboard 配置以下环境变量：
+
+| 变量名 | 说明 | 必需 |
+|--------|------|------|
+| `OPENAI_API_KEY` | LLM API Key（支持通义千问） | ✅ |
+| `OPENAI_BASE_URL` | API Base URL（通义千问需要） | 推荐 |
+| `GITHUB_TOKEN` | GitHub Personal Access Token | 可选 |
+
+**通义千问配置示例**：
+```env
+OPENAI_API_KEY=sk-xxx
+OPENAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+```
+
+---
+
+### 📦 CLI 部署
 
 ```bash
 # 安装 Vercel CLI
@@ -119,19 +195,22 @@ npm install -g vercel
 
 # 登录并部署
 vercel login
-vercel
+vercel --prod
 
 # 配置环境变量
 vercel env add OPENAI_API_KEY
 vercel env add OPENAI_BASE_URL
 vercel env add GITHUB_TOKEN
-
-# 生产部署
-vercel --prod
 ```
 
+---
+
+### 🌐 其他部署平台
+
+详细部署指南请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)
+
 支持的部署平台：
-- ✅ **Vercel** (推荐 - 免费、零配置)
+- ✅ **Vercel** (推荐 - 免费、零配置、Serverless)
 - ✅ **Railway** (简单部署、免费额度)
 - ✅ **Docker + 云服务器** (完全控制)
 - ✅ 阿里云 / 腾讯云 / AWS 等
@@ -151,6 +230,31 @@ OPENAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 
 ## 📖 更多文档
 
-- [部署指南](./DEPLOYMENT.md) - 详细的远程部署教程
-- [API 文档](./src/server.js) - HTTP API 接口说明
-- [环境变量配置](./.env.example) - 所有可配置项
+- [🎬 演示指南](./docs/DEMO.md) - 详细的使用演示和录制教程
+- [🚀 部署指南](./DEPLOYMENT.md) - 详细的远程部署教程
+- [📚 API 文档](./src/server.js) - HTTP API 接口说明
+- [⚙️ 环境变量配置](./.env.example) - 所有可配置项
+
+---
+
+## 🌟 Star History
+
+如果这个项目对你有帮助，请给个 ⭐️ Star 支持一下！
+
+[![Star History Chart](https://api.star-history.com/svg?repos=upworldcjw/code-review-agent&type=Date)](https://github.com/upworldcjw/code-review-agent)
+
+---
+
+## 📄 License
+
+ISC License
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [chenjianwei](https://github.com/upworldcjw)**
+
+[⬆ 回到顶部](#-code-review-agent-github-pr)
+
+</div>
