@@ -1,5 +1,6 @@
 // DOM 元素
 const prUrlInput = document.getElementById('prUrl');
+const githubTokenInput = document.getElementById('githubToken');
 const reviewBtn = document.getElementById('reviewBtn');
 const parsedInfo = document.getElementById('parsedInfo');
 const reportSection = document.getElementById('reportSection');
@@ -43,13 +44,22 @@ async function handleReview() {
   setReviewingState(true);
 
   try {
+    // 构建请求体
+    const requestBody = { url: prUrl };
+    
+    // 如果用户提供了自定义 GitHub Token，添加到请求中
+    const githubToken = githubTokenInput.value.trim();
+    if (githubToken) {
+      requestBody.githubToken = githubToken;
+    }
+
     // 调用后端 API
     const response = await fetch('/review', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url: prUrl }),
+      body: JSON.stringify(requestBody),
     });
 
     // 获取响应文本

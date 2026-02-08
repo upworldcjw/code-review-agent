@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
     if (req.method === 'POST') {
       // 解析请求体
       const body = await parseBody(req);
-      const { url } = body;
+      const { url, githubToken: customGithubToken } = body;
 
       if (!url) {
         return res.status(400).json({
@@ -64,13 +64,15 @@ module.exports = async (req, res) => {
       // 验证环境变量
       const openaiApiKey = process.env.OPENAI_API_KEY;
       const openaiBaseUrl = process.env.OPENAI_BASE_URL;
-      const githubToken = process.env.GITHUB_TOKEN;
+      
+      // 优先使用用户提供的 GitHub Token，否则使用环境变量中的默认 Token
+      const githubToken = customGithubToken || process.env.GITHUB_TOKEN;
       
       console.log(`[${new Date().toISOString()}] 收到审查请求: ${url}`);
       console.log('环境变量检查:');
       console.log(`  OPENAI_API_KEY: ${openaiApiKey ? '✅ 已配置' : '❌ 未配置'}`);
       console.log(`  OPENAI_BASE_URL: ${openaiBaseUrl || '未设置（使用默认）'}`);
-      console.log(`  GITHUB_TOKEN: ${githubToken ? '✅ 已配置' : '⚠️ 未配置'}`);
+      console.log(`  GITHUB_TOKEN: ${githubToken ? (customGithubToken ? '✅ 用户提供' : '✅ 使用默认') : '⚠️ 未配置'}`);
       
       if (!openaiApiKey) {
         return res.status(500).json({

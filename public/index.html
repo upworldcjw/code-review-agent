@@ -25,6 +25,26 @@
             value="https://github.com/upworldcjw/JWKeyWordFilter/pull/1"
           />
         </div>
+        
+        <!-- GitHub Token 输入框（可选） -->
+        <div class="input-group">
+          <label for="githubToken">
+            GitHub Token (可选)
+            <span class="label-hint">用于访问私有仓库</span>
+          </label>
+          <input 
+            type="password" 
+            id="githubToken" 
+            placeholder="ghp_xxxxxxxxxxxxxxxxxxxx (留空则使用服务端默认 Token)"
+          />
+          <div class="token-hint">
+            <small>
+              💡 <strong>安全提示</strong>: Token 仅用于本次请求，不会被存储。
+              <a href="https://github.com/settings/tokens" target="_blank">如何创建 Token</a>
+            </small>
+          </div>
+        </div>
+
         <button id="reviewBtn" class="btn-primary">
           <span class="btn-text">开始审查</span>
           <span class="btn-loading" style="display: none;">审查中...</span>

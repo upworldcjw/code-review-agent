@@ -82,6 +82,36 @@ main {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.label-hint {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: normal;
+  margin-left: 8px;
+}
+
+.token-hint {
+  margin-top: 8px;
+  padding: 10px;
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 4px;
+}
+
+.token-hint small {
+  color: #856404;
+  line-height: 1.5;
+}
+
+.token-hint a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.token-hint a:hover {
+  text-decoration: underline;
+}
+
 /* 按钮 */
 .btn-primary {
   width: 100%;
