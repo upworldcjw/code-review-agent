@@ -2,7 +2,7 @@
   "functions": {
     "api/server.js": {
       "memory": 1024,
-      "maxDuration": 60
+      "maxDuration": 180
     }
   },
   "rewrites": [
